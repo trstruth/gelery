@@ -39,15 +39,15 @@ func WithBroker(brokerInfo *CeleryBrokerInfo) Option {
 	}
 }
 
-func (cc *CeleryClient) SendTask(taskName string, args []interface{}, kwargs map[string]interface{}, queue string) error {
+func (cc *CeleryClient) SendTask(taskName string, args []interface{}, kwargs map[string]interface{}, queue string) (*uuid.UUID, error) {
 	sendTaskMessage := NewSendTaskMessage(taskName, args, kwargs)
 	err := cc.broker.SendCeleryMessage(sendTaskMessage, queue)
 	if err != nil {
-		return fmt.Errorf("Failed to SendTask %s: %s", taskName, err)
+		return nil, fmt.Errorf("Failed to SendTask %s: %s", taskName, err)
 	}
-	return nil
+	return sendTaskMessage.Headers.ID, nil
 }
 
-func (cc *CeleryClient) GetResult(id uuid.UUID) (*AsyncResult, error) {
-	return cc.broker.GetAsyncResult(id)
+func (cc *CeleryClient) GetResult(id *uuid.UUID, queue string) (*AsyncResult, error) {
+	return cc.broker.GetAsyncResult(id, queue)
 }

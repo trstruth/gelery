@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/trstruth/gelery"
 )
@@ -21,10 +22,19 @@ func main() {
 		log.Fatal(err)
 	}
 
-	err = cc.SendTask("net_task.version", []interface{}{}, map[string]interface{}{}, "heartbeat")
+	taskID, err := cc.SendTask("net_task.version", []interface{}{}, map[string]interface{}{}, "heartbeat")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	fmt.Println("Successfully sent a task to celery")
+
+	time.Sleep(3 * time.Second)
+
+	r, err := cc.GetResult(taskID, "heartbeat")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("got result for taskID %s: %v", taskID, r)
 }

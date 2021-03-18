@@ -6,7 +6,7 @@ import (
 
 type CeleryBroker interface {
 	SendCeleryMessage(*CeleryMessage, string) error
-	GetAsyncResult(uuid.UUID) (*AsyncResult, error)
+	GetAsyncResult(*uuid.UUID, string) (*AsyncResult, error)
 }
 
 type CeleryBrokerInfo struct {

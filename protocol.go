@@ -22,6 +22,12 @@ func NewSendTaskMessage(taskName string, args []interface{}, kwargs map[string]i
 	replyTo := uuid.New()
 	deliveryTag := uuid.New()
 
+	if args == nil {
+		args = []interface{}{}
+	}
+	if kwargs == nil {
+		kwargs = map[string]interface{}{}
+	}
 	body := []interface{}{args, kwargs, nil}
 	jsonBodyData, _ := json.Marshal(body)
 	b64Data := base64.StdEncoding.EncodeToString(jsonBodyData)

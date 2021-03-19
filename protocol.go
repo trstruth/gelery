@@ -108,7 +108,7 @@ type CeleryDeliveryInfo struct {
 }
 
 type AsyncResult struct {
-	TaskID    *uuid.UUID             `json:"task_id"`
+	TaskID    uuid.UUID              `json:"task_id"`
 	Status    string                 `json:"status"`
 	Result    interface{}            `json:"result"`
 	Traceback *string                `json:"traceback"`
